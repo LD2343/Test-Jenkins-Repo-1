@@ -26,9 +26,12 @@ pipeline {
         }
         stage('Initialize Terraform') {
             steps {
-                sh '''
-                terraform init
-                '''
+                withCredentials([[
+                    $class: 'AmazonWebServicesCredentialsBinding',
+                    credentialsId: 'JenkinsAdmin' // need populate based on name in Jenkins for AWS Credentials
+                ]]) {
+                    sh 'terraform init'
+                }
             }
         }
         stage('Plan Terraform') {
