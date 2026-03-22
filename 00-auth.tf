@@ -1,26 +1,20 @@
-# https://registry.terraform.io/providers/hashicorp/aws/6.17.0/docs
-
-# Terraform configuration block
-# This defines the minimum Terraform version and required providers
 terraform {
-  required_version = ">= 1.0"
-
   required_providers {
     aws = {
       source  = "hashicorp/aws"
-      version = "~> 6.0"
+      version = "~> 5.0" # Use latest version if possible
     }
   }
+
+  backend "s3" {
+    bucket  = "jenkins-ltd-class7"                 # Name of the S3 bucket
+    key     = "jenkins-test-031726.tfstate"        # The name of the state file in the bucket
+    region  = "us-east-1"                          # Use a variable for the region
+    encrypt = true                                 # Enable server-side encryption (optional but recommended)
+  } 
 }
 
-# AWS Provider configuration
-# This tells Terraform how to connect to AWS
 provider "aws" {
   region  = "us-east-1"
-  profile = "default"
-  default_tags {
-    tags = {
-      ManagedBy = "Terraform"
-    }
-  }
 }
+
